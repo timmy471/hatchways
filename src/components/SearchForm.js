@@ -7,7 +7,6 @@ const SearchForm = ({ onSubmit, students }) => {
     tag: "",
   });
 
-  let newData;
 
   const { studentName, tag } = values;
 
@@ -18,9 +17,9 @@ const SearchForm = ({ onSubmit, students }) => {
 
     //call the filter function, passing accurate data
     if (name === "studentName") {
-      getResults(value, tag);
+     onSubmit(getResults(value, tag)) ;
     } else {
-      getResults(studentName, value);
+      onSubmit(getResults(studentName, value));
     }
   };
 
@@ -32,16 +31,24 @@ const SearchForm = ({ onSubmit, students }) => {
       student.lastName
     )}`.includes(makeLowerCase(name));
 
-    //filter for tag
-  const hasTag = (student, tag) =>
-    makeLowerCase(student.city).includes(makeLowerCase(tag));
+  //filter for tag
+  const hasTag = (student, tag) => {
+    let studentTags = student.tags || [""];
+    if (studentTags) {
+      let statusArray = studentTags.map((studentTag) =>
+        studentTag.includes(tag)
+      );
+      if (statusArray.includes(true)) {
+        return true;
+      }
+    }
 
+    return false;
+
+  };
 
   const getResults = (name, tag) => {
-    //check for empty values
-    // if (!name.trim().length && !tag.trim().length) {
-    //   return false;
-    // }
+    let newData = students;
 
     //filter for both values if available
     if (name.trim().length && tag.trim().length) {
@@ -50,14 +57,11 @@ const SearchForm = ({ onSubmit, students }) => {
       );
     } else if (name.trim().length) {
       newData = students.filter((student) => hasName(student, name));
-    } else {
-      
-      ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-      // **************************CHANGE THIS TO TAG****************************8
-      ///////////////////////////////////////////////////
+    } else if (tag.trim().length) {
       newData = students.filter((student) => hasTag(student, tag));
     }
-    onSubmit(newData);
+
+    return newData;
   };
 
   return (

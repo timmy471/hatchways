@@ -1,14 +1,16 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-const TextField = ({ placeholder, name, onChange }) => {
+const TextField = ({ placeholder, name, value, onChange, onKeyDown }) => {
   return (
     <div>
       <input
         className="text-field"
         placeholder={placeholder}
         name={name}
+        value={value}
         onChange={onChange}
+        onKeyDown={onKeyDown}
         type="text"
       />
     </div>
@@ -18,7 +20,7 @@ const TextField = ({ placeholder, name, onChange }) => {
 TextField.propTypes = {
   placeholder: PropTypes.string,
   name: PropTypes.string.isRequired,
-  onChange: PropTypes.func.isRequired,
+  onChange: PropTypes.func,
 };
 
 TextField.defaultProps = {

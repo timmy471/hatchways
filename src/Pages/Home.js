@@ -38,8 +38,10 @@ const Home = () => {
 
     //eslint-disable-next-line
   }, []);
+  
 
   const onSubmit = (values) => setFilteredStudents(values);
+    
 
   return (
     <div className="paper">
@@ -48,7 +50,7 @@ const Home = () => {
       ) : !error ? (
         <>
           <SearchForm onSubmit={onSubmit} students={students} />
-          <DataLayout students={filteredStudents} />
+          <DataLayout students={filteredStudents} onSubmit={onSubmit} />
         </>
       ) : (
         <h3>An error has occured</h3>

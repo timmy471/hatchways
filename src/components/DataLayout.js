@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import GradesLayout from "./GradesLayout";
+import TextField from "./TextField";
+import { FaMinus, FaPlus } from "react-icons/fa";
 
-const DataLayout = ({ students }) => {
+const DataLayout = ({ students, onSubmit }) => {
   const [gradesToShow, setGradesToShow] = useState([]);
 
   const getAverage = (numbers) =>
@@ -15,20 +17,38 @@ const DataLayout = ({ students }) => {
       : setGradesToShow([...gradesToShow, id]);
   };
 
+  const addTag = (e, id) => {
+    if (e.key === "Enter") {
+      let editedStudent = students.find((student) => student.id === id);
+      if (editedStudent.tags) {
+        editedStudent.tags = [...editedStudent.tags, e.target.value];
+      } else {
+        editedStudent.tags = [e.target.value];
+      }
+      onSubmit([...students])
+      e.target.value=""
+    }
+  };
+
   return (
     <div>
       {students.length ? (
         students.map(
-          ({ id, firstName, lastName, email, company, skill, grades, pic }) => (
+          ({
+            id,
+            firstName,
+            lastName,
+            email,
+            company,
+            skill,
+            grades,
+            pic,
+            tags,
+          }) => (
             <div className="data-container d-flex" key={id}>
               <div className="data-detail d-flex">
                 <div id="picture-container">
-                  <img
-                    src={pic}
-                    alt="name"
-                    width="80"
-                    style={{ maxWidth: "100%" }}
-                  />
+                  <img src={pic} alt={firstName} width="80" />
                 </div>
                 <div>
                   <h2 style={{ fontWeight: "bold" }}>
@@ -40,6 +60,25 @@ const DataLayout = ({ students }) => {
                     <li>Skill: {skill}</li>
                     <li>Average: {getAverage(grades)}</li>
                   </ul>
+                  {tags?.length && (
+                    <ul>
+                      {tags.map((tag, key) => (
+                        <li key={key} style={{marginBottom: "1rem"}}>
+                          <span className="tag">{tag}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+
+                  <br />
+                  <div style={{ width: "10rem" }}>
+                    <TextField
+                      placeholder="Add a tag"
+                      name={`tag--${id}`}
+                      onKeyDown={(e) => addTag(e, id)}
+                    />
+                  </div>
+
                   <br />
                   <div
                     style={{
@@ -52,13 +91,19 @@ const DataLayout = ({ students }) => {
               </div>
 
               <div>
-                <h2 onClick={() => showGrades(id)}>Second</h2>
+                <span onClick={() => showGrades(id)}>
+                  {gradesToShow.includes(id) ? (
+                    <FaMinus className="icon" />
+                  ) : (
+                    <FaPlus className="icon" />
+                  )}
+                </span>
               </div>
             </div>
           )
         )
       ) : (
-        <h3>No data to see</h3>
+        <h4 style={{ textAlign: "center" }}>No data to see</h4>
       )}
     </div>
   );
