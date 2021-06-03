@@ -1,12 +1,15 @@
 import React, { useState } from "react";
+import PropTypes from "prop-types";
 import TextField from "./TextField";
 
+import { getResults } from "../helpers";
+
 const SearchForm = ({ onSubmit, students }) => {
+  //Initialize form values
   const [values, setValues] = useState({
     studentName: "",
     tag: "",
   });
-
 
   const { studentName, tag } = values;
 
@@ -16,52 +19,12 @@ const SearchForm = ({ onSubmit, students }) => {
     setValues({ ...values, [name]: value });
 
     //call the filter function, passing accurate data
+    //setState is asynchronous, get values logically instead
     if (name === "studentName") {
-     onSubmit(getResults(value, tag)) ;
+      onSubmit(getResults(students, value, tag));
     } else {
-      onSubmit(getResults(studentName, value));
+      onSubmit(getResults(students, studentName, value));
     }
-  };
-
-  const makeLowerCase = (val) => val.toLowerCase().trim();
-
-  //filter for name
-  const hasName = (student, name) =>
-    `${makeLowerCase(student.firstName)} ${makeLowerCase(
-      student.lastName
-    )}`.includes(makeLowerCase(name));
-
-  //filter for tag
-  const hasTag = (student, tag) => {
-    let studentTags = student.tags || [""];
-    if (studentTags) {
-      let statusArray = studentTags.map((studentTag) =>
-        studentTag.includes(tag)
-      );
-      if (statusArray.includes(true)) {
-        return true;
-      }
-    }
-
-    return false;
-
-  };
-
-  const getResults = (name, tag) => {
-    let newData = students;
-
-    //filter for both values if available
-    if (name.trim().length && tag.trim().length) {
-      newData = students.filter(
-        (student) => hasName(student, name) && hasTag(student, tag)
-      );
-    } else if (name.trim().length) {
-      newData = students.filter((student) => hasName(student, name));
-    } else if (tag.trim().length) {
-      newData = students.filter((student) => hasTag(student, tag));
-    }
-
-    return newData;
   };
 
   return (
@@ -81,6 +44,11 @@ const SearchForm = ({ onSubmit, students }) => {
       />
     </div>
   );
+};
+
+SearchForm.prototypes = {
+  onSubmit: PropTypes.func,
+  students: PropTypes.array,
 };
 
 export default SearchForm;

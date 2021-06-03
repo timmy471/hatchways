@@ -38,10 +38,8 @@ const Home = () => {
 
     //eslint-disable-next-line
   }, []);
-  
 
   const onSubmit = (values) => setFilteredStudents(values);
-    
 
   return (
     <div className="paper">

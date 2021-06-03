@@ -1,12 +1,32 @@
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@400&display=swap');
+
 body {
   margin: 0;
   padding: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+  /* font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
     "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
+    sans-serif; */
+    font-family: Raleway;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: #d3d3d3;
+
+}
+
+.display-layout::-webkit-scrollbar {
+  width: 1em;
+}
+ 
+.display-layout::-webkit-scrollbar-track {
+  /* box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3); */
+  width: 2px;
+}
+ 
+.display-layout::-webkit-scrollbar-thumb {
+  background-color: #808080;
+  border: 8px;
+  width: 1px;
+  /* outline: 1px solid red; */
 }
 
 ul {
@@ -22,12 +42,19 @@ h2 {
 
 .paper {
   background-color: #ffffff;
-  min-height: 30rem;
+  height: 35rem;
   width: 45%;
-  /* overflow:scroll; */
+ 
   margin: 3rem auto 0;
+ 
 
   border-radius: 1rem;
+}
+
+.display-layout {
+  height: 28rem;
+  overflow-y: auto!important;
+  overflow-x: hidden;
 }
 
 .form-container {
@@ -82,6 +109,16 @@ ul > li {
   cursor: pointer;
 }
 
+.icon:hover {
+  color: black;
+}
+
+.collapse-btn {
+ border: none;
+background: transparent
+}
+
+
 .tag {
   padding: 3px 8px;
   background-color: #d3d3d3;
@@ -91,7 +128,7 @@ ul > li {
 
 @media (max-width: 768px) {
   .paper {
-    width: 70%;
+    width: 90%;
   }
 }
 

@@ -1,16 +1,17 @@
 import React, { useState } from "react";
+import PropTypes from "prop-types";
 import GradesLayout from "./GradesLayout";
 import TextField from "./TextField";
 import { FaMinus, FaPlus } from "react-icons/fa";
 
+import { getAverage } from "../helpers";
+
 const DataLayout = ({ students, onSubmit }) => {
   const [gradesToShow, setGradesToShow] = useState([]);
 
-  const getAverage = (numbers) =>
-    numbers.reduce((sum, value) => {
-      return sum + Number(value);
-    }, 0) / numbers.length;
+  
 
+  //Show or hide collapsible data by checking occurence of the Section Id
   const showGrades = (id) => {
     gradesToShow.includes(id)
       ? setGradesToShow(gradesToShow.filter((gradesId) => gradesId !== id))
@@ -18,6 +19,7 @@ const DataLayout = ({ students, onSubmit }) => {
   };
 
   const addTag = (e, id) => {
+     //Add tag to the respective student using the Id as reference if a the Enter key is pressed
     if (e.key === "Enter") {
       let editedStudent = students.find((student) => student.id === id);
       if (editedStudent.tags) {
@@ -30,8 +32,9 @@ const DataLayout = ({ students, onSubmit }) => {
     }
   };
 
+
   return (
-    <div>
+    <div className="display-layout">
       {students.length ? (
         students.map(
           ({
@@ -51,14 +54,14 @@ const DataLayout = ({ students, onSubmit }) => {
                   <img src={pic} alt={firstName} width="80" />
                 </div>
                 <div>
-                  <h2 style={{ fontWeight: "bold" }}>
+                  <h2 style={{ fontWeight: 600 }}>
                     {firstName.toUpperCase()} {lastName.toUpperCase()}
                   </h2>
                   <ul>
                     <li>Email: {email}</li>
                     <li>Company: {company}</li>
                     <li>Skill: {skill}</li>
-                    <li>Average: {getAverage(grades)}</li>
+                    <li>Average: {getAverage(grades)}%</li>
                   </ul>
                   {tags?.length && (
                     <ul>
@@ -91,13 +94,13 @@ const DataLayout = ({ students, onSubmit }) => {
               </div>
 
               <div>
-                <span onClick={() => showGrades(id)}>
+                <button className="collapse-btn" onClick={() => showGrades(id)} >
                   {gradesToShow.includes(id) ? (
                     <FaMinus className="icon" />
                   ) : (
                     <FaPlus className="icon" />
                   )}
-                </span>
+                </button>
               </div>
             </div>
           )
@@ -108,5 +111,10 @@ const DataLayout = ({ students, onSubmit }) => {
     </div>
   );
 };
+
+DataLayout.prototypes = {
+  students: PropTypes.array,
+  onSubmit:PropTypes.func,
+}
 
 export default DataLayout;
